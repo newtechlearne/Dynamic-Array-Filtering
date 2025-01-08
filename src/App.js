@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 const DynamicFilter = () => {
-  // Sample data: List of items with their categories
+  // Sample data: List of items with names and categories
   const [items] = useState([
     { id: 1, name: 'Apple', category: 'Fruit' },
     { id: 2, name: 'Carrot', category: 'Vegetable' },
@@ -9,53 +9,42 @@ const DynamicFilter = () => {
     { id: 4, name: 'Potato', category: 'Vegetable' },
   ]);
 
-  // State to track which categories are selected for filtering
+  // State to keep track of which categories are selected for filtering
   const [filterState, setFilterState] = useState({
-    Fruit: true, // Show fruits by default
-    Vegetable: true, // Show vegetables by default
+    Fruit: true, // Initially show fruits
+    Vegetable: true, // Initially show vegetables
   });
 
-  // Function to update filter state when a checkbox is clicked
-  const updateFilter = (category) => {
-    setFilterState((currentFilters) => {
+  // Function to handle checkbox changes
+  const handleCheckboxChange = (category) => {
+    setFilterState((prevState) => {
+      // Update the filter state for the clicked category
       return {
-        ...currentFilters, // Keep the current filter settings
-        [category]: !currentFilters[category], // Toggle the clicked category
+        ...prevState, // Keep the current settings
+        [category]: !prevState[category], // Toggle the selected category
       };
     });
   };
 
-  // Get only the items that match the selected categories
-  const filteredItems = items.filter((item) => filterState[item.category]);
+  // Filter the items based on the selected categories
+  const filteredItems = items.filter((item) => {
+    // Only include items that belong to a selected category
+    return filterState[item.category];
+  });
 
   return (
     <div>
       <h1>Dynamic Array Filtering</h1>
 
-      {/* Render checkboxes for each category */}
+      {/* Section for filter checkboxes */}
       <div>
+        {/* Create a checkbox for each category */}
         {Object.keys(filterState).map((category) => (
-          <label key={category}>
+          <label key={category} style={{ display: 'block', margin: '5px 0' }}>
             <input
               type="checkbox"
-              checked={filterState[category]} // Checkbox state is linked to the filterState
-              onChange={() => updateFilter(category)} // Update the filter when checkbox is clicked
+              checked={filterState[category]} // Checkbox reflects the filter state
+              onChange={() => handleCheckboxChange(category)} // Handle checkbox changes
             />
-            {category} {/* Display the category name */}
-          </label>
-        ))}
-      </div>
-
-      {/* Render the filtered items as a list */}
-      <ul>
-        {filteredItems.map((item) => (
-          <li key={item.id}>
-            {item.name} - <strong>{item.category}</strong>
-          </li>
-        ))}
-      </ul>
-    </div>
-  );
-};
-
-export default DynamicFilter;
+            {category} {/* Display the category name (e.g., Fruit, Vegetable) */}
+          </
