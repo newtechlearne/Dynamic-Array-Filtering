@@ -47,4 +47,21 @@ const DynamicFilter = () => {
               onChange={() => handleCheckboxChange(category)} // Handle checkbox changes
             />
             {category} {/* Display the category name (e.g., Fruit, Vegetable) */}
-          </
+          </label>
+        ))}
+      </div>
+
+      {/* Section to display filtered items */}
+      <ul>
+        {/* Show only the items that match the selected categories */}
+        {filteredItems.map((item) => (
+          <li key={item.id}>
+            {item.name} - <strong>{item.category}</strong>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+};
+
+export default DynamicFilter;
